@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_44813_util.types</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>types</name>
+        <script><![CDATA[var types = Class.create();
+(function(types) {
+	var booleanTextRe = /^(?:(t(?:rue)?|y(?:es)?|(?:0+\.)?0*[1-9])|(f(?:alse)|no?|0+(?:\.0+)?))(?:\s|$)/i;
+    var nwsRe = /( |(?=[^ ]))\s+/g;
+    var trimRightRe = /^\s*\S+(\s+\S+)/g;
+    var nlRe = /\r\n?|\n/g;
+
+    function isNil(obj) { return typeof(obj) == "undefined" || obj === null; }
+	function asString(value, defaultValue, preserveWhiteSpace)  {
+		if (isNil(value)) {
+			if (isNil(defaultValue))
+				return defaultValue;
+			return asString(defaultValue);
+		}
+		if (typeof(value) != "string") {
+			value = value.toString();
+			if (typeof(value) != "string")
+				return asString(defaultValue, undefined, preserveWhiteSpace);
+		}
+		if (((preserveWhiteSpace) ? value : value.trim()).length > 0 || isNil(defaultValue))
+			return value;
+		defaultValue = asString(defaultValue, undefined, preserveWhiteSpace);
+		if (typeof(defaultValue) != "string")
+			return value;
+		return defaultValue;
+    }
+    function asNormalizedString(value) {
+        value = asString(value, "").trim();
+        if (value.length == 0)
+            return value;
+        return value.replace(nwsRe, ' ');
+    }
+    function trimRight(value) {
+        value = asString(value, "").trim();
+        if (value.length == 0)
+            return value;
+        var m = trimRightRe.exec(value);
+        if (isNil(m))
+            return value;
+        return m[0];
+    }
+    function indent(value, indentText, trimRight) {
+        if (isNil(value))
+            return "";
+        indentText = asString(indentText, "\t", true);
+        var returnArray = Array.isArray(value);
+        value = asTextLines(value);
+        if (trimRight)
+            value = value.map(function(l) {
+                var s = trimRight(l);
+                if (s.length == 0)
+                    return s;
+                return indentText + s;
+            });
+        else
+            value = value.map(function(l) { return indentText + l; });
+        
+        if (returnArray)
+            return value;
+        return value.join("\n");
+    }
+    function asBoolean(value, defaultValue) {
+        if (isNil(value)) {
+            if (typeof(defaultValue) == "undefined" || defaultValue === null)
+                return defaultValue;
+            return asBoolean(defaultValue);
+        }
+        var t = typeof(value);
+        if (t == "boolean")
+            return value;
+        if (t == "number") {
+            if (isNaN(value))
+                return asBoolean(defaultValue);
+            return value != 0;
+        }
+
+        if (t != "string") {
+            value = value.toString();
+            if (typeof(value) != "string")
+                return asBoolean(defaultValue);
+        }
+        if ((value = value.trim()).length == 0)
+            return asBoolean(defaultValue);
+        var mg = booleanTextRe.exec(value.trim());
+        if (typeof(mg) == "undefined" || mg === null)
+            return asBoolean(defaultValue);
+        return typeof(mg[1] != "undefined" && mg[1] !== null);
+    }
+    function asNumber(value, defaultValue) {
+        if (isNil(value)) {
+            if (isNil(defaultValue))
+                return defaultValue;
+            return asNumber(defaultValue);
+        }
+
+        if (typeof(value) != "number") {
+            var v = value;
+            if (typeof(value.valueOf) == "function")
+                try { v = value.valueOf(); } catch (e) { v = null; }
+            if (typeof(v) == "number" && !isNaN(v))
+                return v;
+            if (typeof(value) != "string")
+                try {
+                    value = value.toString();
+                    if(typeof(value) != "string")
+                        value = null;
+                } catch (e) { value = null; }
+            if (value === null)
+                return asNumber(defaultValue);
+            value = parseFloat(value);
+        }
+        if (isNaN(value))
+            return asNumber(defaultValue);
+        return value;
+    }
+    function asArray(value) {
+        if (typeof(value) == "undefined")
+            return [];
+        if (value !== null && Array.isArray(value))
+            return value;
+        return [value];
+    }
+    function asTextLines(value) {
+        if (typeof(value) == "undefined")
+            return [];
+        if (value === null)
+            return [""];
+        if (typeof(value) != "object" || !Array.isArray(value))
+            return asString(value).split(nlRe);
+        if (value.length == 0)
+            return value;
+        if (value.filter(function(a) { return typeof(a) != "string" || nlRe.test(a); }).length == 0)
+            return value;
+        if (value.length == 1)
+            return asString(value[0]).split(nlRe);
+        var arr = [];
+        value.forEach(function(a) { arr = arr.concat(asString(a).split(nlRe)); });
+        return arr;
+    }
+	
+	types.prototype = {
+		initialize: function() {
+		},
+        isNil: isNil,
+        asString: asString,
+        asNormalizedString: asNormalizedString,
+        trimRight: trimRight,
+        indent: indent,
+        asBoolean: asBoolean,
+        asNumber: asNumber,
+        asArray: asArray,
+        asTextLines: asTextLines,
+		type: 'types'
+	};
+})();]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-28 16:43:36</sys_created_on>
+        <sys_id>3f17a27edb41130093da55d0cf96191e</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>types</sys_name>
+        <sys_package display_value="Util" source="x_44813_util">0d7c863adb01130093da55d0cf961938</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Util">0d7c863adb01130093da55d0cf961938</sys_scope>
+        <sys_update_name>sys_script_include_3f17a27edb41130093da55d0cf96191e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-28 16:43:42</sys_updated_on>
+    </sys_script_include>
+</record_update>
