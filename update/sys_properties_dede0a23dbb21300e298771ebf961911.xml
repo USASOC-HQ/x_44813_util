@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices>Production=prod, User Acceptance Testing=uat, Development=dev, Sandbox=sb, (none)=none</choices>
+        <description>Current ServiceNow instsance SDLC stage</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_44813_util.SN_SDLC_STAGE</name>
+        <read_roles/>
+        <suffix>SN_SDLC_STAGE</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-06-25 22:45:01</sys_created_on>
+        <sys_id>dede0a23dbb21300e298771ebf961911</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>x_44813_util.SN_SDLC_STAGE</sys_name>
+        <sys_package display_value="Util" source="x_44813_util">0d7c863adb01130093da55d0cf961938</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Util">0d7c863adb01130093da55d0cf961938</sys_scope>
+        <sys_update_name>sys_properties_dede0a23dbb21300e298771ebf961911</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-06-25 22:53:43</sys_updated_on>
+        <type>choicelist</type>
+        <value>none</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=dede0a23dbb21300e298771ebf961911"/>
+</record_update>
