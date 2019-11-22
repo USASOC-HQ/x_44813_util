@@ -3,6 +3,7 @@
         <access>public</access>
         <active>true</active>
         <api_name>x_44813_util.JsTypeCommander</api_name>
+        <caller_access/>
         <client_callable>false</client_callable>
         <description>Common functions for manipulating and asserting javascript data types.</description>
         <name>JsTypeCommander</name>
